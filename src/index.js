@@ -8,8 +8,14 @@ const renderSquare = (i) => {
 };
 // 下棋历史
 const HistoryList = () => {
-  const { history, changeStep, changeX } = useContext(GameContext);
+  const { history, changeStep, changeX,changeValues,changeLocation } = useContext(GameContext);
   const JumpTo = (move) => {
+    if(move === 0){
+      changeX(true)
+      changeStep(0)
+      changeValues([],true)
+      changeLocation('')
+    }
     changeStep(move);
     move % 2 === 0 ? changeX(true) : changeX(false);
   };
@@ -46,7 +52,7 @@ const Square = (props) => {
     }
     squares[val] = isX ? "X" : "O";
     changeX(!isX);
-    changeValues(squares);
+    changeValues(squares,false);
     changeStep(history.length);
     changeLocation(`[${Math.floor(val / 3 + 1)},${(val % 3) + 1}]`);
   };
@@ -128,8 +134,8 @@ const Game = () => {
   const changeX = (x) => {
     setX(x);
   };
-  const changeValues = (squares) => {
-    setHistory(history.concat([{ squares: squares }]));
+  const changeValues = (squares,clear) => {
+    !clear?setHistory(history.concat([{ squares: squares }])):setHistory([{ squares: Array(9).fill(null) }]);
   };
   const changeStep = (val) => {
     setStep(val);
