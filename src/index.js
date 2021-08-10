@@ -8,22 +8,24 @@ const renderSquare = (i) => {
 };
 // 下棋历史
 const HistoryList = () => {
-  const { history, changeStep, changeX,changeValues,changeLocation } = useContext(GameContext);
+  const { history, changeStep, changeX, changeValues, changeLocation } =
+    useContext(GameContext);
   const JumpTo = (move) => {
-    if(move === 0){
-      changeX(true)
-      changeStep(0)
-      changeValues([],true)
-      changeLocation('')
+    if (move === 0) {
+      changeValues([], true);
+      changeLocation("");
     }
     changeStep(move);
     move % 2 === 0 ? changeX(true) : changeX(false);
   };
   const moves = history.map((step, move) => {
+   
     const desc = move ? "Go to move #" + move : "Go to start game";
     return (
       <ol key={move}>
-        <button onClick={() => JumpTo(move)}>{desc}</button>
+        <button onClick={() => JumpTo(move)}>
+          {desc}
+        </button>
       </ol>
     );
   });
@@ -52,7 +54,7 @@ const Square = (props) => {
     }
     squares[val] = isX ? "X" : "O";
     changeX(!isX);
-    changeValues(squares,false);
+    changeValues(squares, false);
     changeStep(history.length);
     changeLocation(`[${Math.floor(val / 3 + 1)},${(val % 3) + 1}]`);
   };
@@ -93,15 +95,15 @@ const Board = () => {
   getWinner(current.squares)
     ? (conclusion = (
         <span>
-          The winner :{" "}
-          <span style={{ fontWeight: "bold", fontSize: 20,color:'red' }}>
+          The winner :
+          <span style={{ fontWeight: "bold", fontSize: 20, color: "red" }}>
             {getWinner(current.squares)[0]}
           </span>
         </span>
       ))
     : (conclusion = (
         <span>
-          Next player :{" "}
+          Next player :
           <span style={{ fontWeight: "bold", fontSize: 20 }}>
             {isX ? "X" : "O"}
           </span>
@@ -134,8 +136,10 @@ const Game = () => {
   const changeX = (x) => {
     setX(x);
   };
-  const changeValues = (squares,clear) => {
-    !clear?setHistory(history.concat([{ squares: squares }])):setHistory([{ squares: Array(9).fill(null) }]);
+  const changeValues = (squares, clear) => {
+    !clear
+      ? setHistory(history.concat([{ squares: squares }]))
+      : setHistory([{ squares: Array(9).fill(null) }]);
   };
   const changeStep = (val) => {
     setStep(val);
